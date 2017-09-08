@@ -1,0 +1,21 @@
+- Enter 10 consecutive strings -
+1. ()
+Parantheses Are Balanced
+2. (()
+Parantheses Are NOT Balanced
+3. (())
+Parantheses Are Balanced
+4. (I think(therefore I am))
+Parantheses Are Balanced
+5. (()()())
+Parantheses Are Balanced
+6. (((()))
+Parantheses Are NOT Balanced
+7. (((())))
+Parantheses Are Balanced
+8. ((as((b)c)))
+Parantheses Are Balanced
+9. ((()(()))
+Parantheses Are NOT Balanced
+10. ((()(())))
+Parantheses Are Balanced
