@@ -1,0 +1,21 @@
+1. ()()
+Parantheses Are Balanced
+2. (()((())
+Parantheses Are NOT Balanced
+3. (Z(X)Y)
+Parantheses Are Balanced
+4. (I think(therefore I am))
+Parantheses Are Balanced
+5. (()())
+Parantheses Are Balanced
+6. ((((THIS WORKS)))
+Parantheses Are NOT Balanced
+7. (((R(U)N)))
+Parantheses Are Balanced
+8. ((ING((O(U(T))))
+Parantheses Are NOT Balanced
+9. (((OF)((THINGS)))
+Parantheses Are NOT Balanced
+10. (((TO))((ENTER)))
+Parantheses Are Balanced
+11. Parantheses Are Balanced

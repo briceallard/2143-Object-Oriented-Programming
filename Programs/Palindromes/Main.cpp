@@ -31,12 +31,13 @@ private:
 /////////////////////////////////////////////////////////////
 	Stack *S;
 	string UI;
+	char ch;
 
 	ifstream infile;
 	ofstream outfile;
 	
 	/*
-	*@FunctionName: StackBal
+	*@FunctionName: processUI
 	*@Description:
 	*			Determines input string from user and isolates
 				the parantheses into the stack.
@@ -46,7 +47,7 @@ private:
 	*			stack empty (true/false)
 	*/
 
-	bool StackBal(string input) {
+	bool processUI(string input) {
 		for (int i = 0; i < input.length(); i++) {
 			if (input[i] == '(')
 				S->push(input[i]);
@@ -66,8 +67,8 @@ public:
 
 	Palindromes() {
 		UI = "";	// Initialize string to EMPTY
-		infile.open("string.txt");
-		outfile.open("string.txt");
+		infile.open("infile.txt");
+		outfile.open("outfile.txt");
 	}
 
 	/*
@@ -82,7 +83,7 @@ public:
 	void ProcessExpression(string input) {
 		S = new Stack(input.length() + 2);
 		
-		if (StackBal(input)) {
+		if (processUI(input)) {
 			cout << "Parantheses Are Balanced\n";
 			outfile << "Parantheses Are Balanced\n";
 		}
@@ -102,27 +103,133 @@ public:
 	*@Returns:
 	*			void
 	*/
-	void GetInput() {
-		int NumOfInput = 1;
+	void GetUI() {
+		int NumOfInput = 0;
+		int count = 1;
 		
-		cout << " - Enter 10 consecutive strings -" << endl;
-		outfile << "- Enter 10 consecutive strings -" << endl;
+		cout << "How many lines of input do you have? ";
+		cin >> NumOfInput;
+		cout << " - Enter " << NumOfInput << " consecutive strings -" << endl;
+		outfile << "- Enter " << NumOfInput << " consecutive strings -" << endl;
+		cin.ignore();	// prevents reading in \n from previous cin (stupid C++)
 
-		// Gathers input for 10 strings from user
-		for (int i = 0; i < 10; i++) {
-			cout << NumOfInput << ". ";
-			outfile << NumOfInput << ". ";
+		//Gathers input for strings from user
+		while (count <= NumOfInput) {
+			cout << count << ". ";
+			outfile << count << ". ";
 			getline(cin, UI);
 			outfile << UI << '\n';
 			ProcessExpression(UI);
-
-			NumOfInput++;
+			count++;
 		}
+	}
+
+	/*
+	*@FunctionName: processBalanced
+	*@Description:
+	*			Announces whether string (from infile) is balanced or not.
+	*@Params:
+	*			bool bal - readInFile (true/false)
+	*			string UI - Global (Line being processed char by char)
+	*			int count - the number of lines it has processed
+	*@Returns:
+	*			void
+	*/
+	void processBalanced(bool bal, string UI, int count) {
+		cout << count << ". " << UI;
+		outfile << count << ". " << UI;
+
+		if (count != 0) {
+			if (bal) {
+				cout << "Parantheses Are Balanced\n";
+				outfile << "Parantheses Are Balanced\n";
+			}
+			else {
+				cout << "Parantheses Are NOT Balanced\n";
+				outfile << "Parantheses Are NOT Balanced\n";
+			}
+		}
+		return;
+	}
+
+	/*
+	*@FunctionName: processInFile
+	*@Description:
+	*			Determines input string from infile and isolates
+	*			the parantheses into the stack.
+	*@Params:
+	*			none
+	*@Returns:
+	*			void
+	*/
+	void processInfile() {
+		int count = 0;
+
+		do {
+			S = new Stack(100);
+			bool balanced = true;
+			count++;
+
+			while (infile.get(ch)) {
+				UI = UI + ch;
+
+				if (ch == '(')
+					S->push(ch);
+				else if (ch == ')') {
+					if (!S->empty())
+						S->pop();
+					else
+						balanced = false;
+				}
+				else if (ch == '\n')
+					break;
+			}
+
+			if (!balanced) {
+				count = 0;
+				balanced = true;
+
+				processBalanced(balanced, UI, count);
+			}
+			else
+				processBalanced(S->empty(), UI, count);
+
+			UI = "";
+		} while (!infile.eof());
+	}
+
+	/*
+	*@FunctionName: Menu
+	*@Description:
+	*			Console interaction with user to gather input
+	*@Params:
+	*
+	*@Returns:
+	*			void
+	*/
+	void Menu() {
+		int selection;
+
+		cout << "Palidromes Program by Brice Allard\n\n";
+		cout << "1. Enter expression from keyboard\n";
+		cout << "2. Use pre-defined input file\n";
+		cout << "Choice (1-2): ";
+		cin >> selection;
+		cout << endl;
+
+		if (selection == 1)
+			GetUI();
+		else if (selection == 2)
+			processInfile();
+		else
+			cout << "Invalid selection, Good-bye!\n";
+
+		system("pause");
 	}
 };
 
 int main() {
 	Palindromes P;
 	
-	P.GetInput();
+	P.Menu();
 }
