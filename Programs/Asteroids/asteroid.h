@@ -1,7 +1,3 @@
-#include <iostream>
-#include <string>
-#include <cmath>
-
 #pragma once
 
 using namespace std;

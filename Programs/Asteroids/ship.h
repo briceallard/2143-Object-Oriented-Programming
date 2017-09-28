@@ -21,6 +21,9 @@ public:
 	double getTotalDistance();
 	// getTotalDistance
 	// @return double - total distance traveled
+	double getShipHealth();
+	// getShipHealth
+	// @return double - Current ships health
 	double getXCoord();
 	// getXCoord
 	// @return double - X coordinate for ship location

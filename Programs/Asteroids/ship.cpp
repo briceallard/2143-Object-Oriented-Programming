@@ -30,6 +30,10 @@ double Ship::getTotalDistance() {
 	return totDistance;
 }
 
+double Ship::getShipHealth() {
+	return shipHealth;
+}
+
 double Ship::getXCoord() {
 	return shipXCoord;
 }

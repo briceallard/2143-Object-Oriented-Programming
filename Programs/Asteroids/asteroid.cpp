@@ -1,6 +1,3 @@
-#include <iostream>
-#include <fstream>
-#include <cmath>
 #include "asteroid.h"
 
 using namespace std;
@@ -21,6 +18,8 @@ Asteroid::Asteroid(double x, double y, double w) {
 Asteroid::~Asteroid() {
 
 }
+
+
 
 double Asteroid::getWeight() {
 	return weight;

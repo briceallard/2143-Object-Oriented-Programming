@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <vector>
 #include <stdlib.h>
@@ -6,6 +7,15 @@
 #include "ship.h"
 
 using namespace std;
+
+struct Points {
+	double x;
+	double y;
+};
+
+Points initiateLaunch();
+// initiateLaunch ==> gets user input and establishes ship
+//						launch location
 
 void fillVector(vector<Asteroid>&);
 // fillVector ==> gets Asteroid information from infile
@@ -15,31 +25,62 @@ void printVector(vector<Asteroid>&);
 // printVector ==> prints information about all asteroids
 // @param const vector<Asteroid>& ==> Asteroids in field
 
-void printDashboard();
+void printDashboard(Ship);
 // printDashboard ==> prints header with ship information
 
 int main() {
 	vector<Asteroid> myAsteroids;
-
+	Points userCoords = initiateLaunch();
+	double xShipCoord = userCoords.x;
+	double yShipCoord = userCoords.y;
+	Ship myShip(xShipCoord, yShipCoord);
+	
 	fillVector(myAsteroids);
 	printVector(myAsteroids);
 	system("pause");
 
-	printDashboard();
+	printDashboard(myShip);
 
 	system("pause");
 	return 0;
 }
 
-// Just testing a menu style information header (NOT COMPLETE YET)
-void printDashboard() {
-	system("CLS");
+Points initiateLaunch() {
+	int selection = 0;
+	Points xy;
+	double x = 0;
+	double y = 0;
 
-	cout << "======================================================\n"
-		<< "|            Ship Information Dashboard              |\n"
-		<< "| Position: [x,y]          Hull Weight(Tons): 12     |\n"
-		<< "| Health: 100%             Traveled (Miles): ~4.2k   |\n"
-		<< "======================================================\n";
+	cout << "Where would you like to launch your ship?\n";
+	cout << "1. Default [0,0]\n";
+	cout << "2. User Specified Location\n";
+	cout << "Input (1-2): ";
+	cin >> selection;
+
+	if (selection == 1) {
+		cout << "Default position used ...\n";
+		system("pause");
+	}
+	else if (selection == 2) {
+		cout << "Enter coordinates for your ship ...\n";
+		cout << "X: "; 
+		cin >> x;
+		cout << "Y: ";
+		cin >> y;
+
+		xy.x = x;
+		xy.y = y;
+		
+		cout << "Ship has launched to coordinates [";
+		cout << x << ',' << y << "]\n";
+		system("pause");
+	}
+	else {
+		cout << "Invalid selection. Default position used ...\n";
+		system("pause");
+	}
+
+	return(xy);
 }
 
 void fillVector(vector<Asteroid>& newMyAsteroids) {
@@ -70,3 +111,22 @@ void printVector(vector<Asteroid>& myAsteroids) {
 		cout << "Weight: " << myAsteroids[i].getWeight() << '\n';
 	}
 }
+
+void printDashboard(Ship S) {
+	system("CLS");	//Clear screen to give effect of immediate update
+
+	cout << setw(60) << setfill('=') << '\n';
+	cout << setw(17) << setfill(' ') << left << '|';
+	cout << setw(26) << "Ship Information Dashboard";
+	cout << setw(17) << right << "|\n";
+	cout << setw(13) << left << "| Position: [";
+	cout << S.getXCoord() << ',' << S.getYCoord() << ']';
+	cout << setw(18) << ' ' << setw(15) << "Hull Weight(Tons): ";
+	cout << S.getCollectedWeight();
+	cout << setw(5) << right << "|\n";
+	cout << setw(10) << left << "| Health: " << S.getShipHealth() << '%';
+	cout << setw(21) << ' ' << setw(18) << "Traveled (Miles): ";
+	cout << S.getTotalDistance() << setw(6) << right << "|\n";
+	cout << setw(60) << setfill('=') << '\n';
+}
+
