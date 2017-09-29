@@ -1,3 +1,6 @@
+#include <math.h>
+#include <vector>
+#include "asteroid.h"
 #pragma once
 
 using namespace std;
@@ -34,8 +37,9 @@ public:
 	// Mutator functions
 	void setXCoord(double);
 	void setYCoord(double);
-	void findAsteroid();
-	void collectAsteroid();
+	void findAsteroid(vector<Asteroid>&);
+	void collectAsteroid(vector<Asteroid>&, int);
+	void moveShip(double, double, double);
 /////////////////////////////////////////////////////
 private:
 	//Member variables

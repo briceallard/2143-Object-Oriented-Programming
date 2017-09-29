@@ -1,4 +1,5 @@
 #include "asteroid.h"
+#include "ship.h"
 
 using namespace std;
 
@@ -6,13 +7,14 @@ Asteroid::Asteroid() {
 	weight = 0;
 	xCoord = 0;
 	yCoord = 0;
-	collected = 0;
+	collected = false;
 }
 
 Asteroid::Asteroid(double x, double y, double w) {
 	xCoord = x;
 	yCoord = y;
 	weight = w;
+	collected = false;
 }
 
 Asteroid::~Asteroid() {
