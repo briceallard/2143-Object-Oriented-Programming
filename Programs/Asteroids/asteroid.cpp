@@ -7,13 +7,15 @@ Asteroid::Asteroid() {
 	weight = 0;
 	xCoord = 0;
 	yCoord = 0;
+	index = 0;
 	collected = false;
 }
 
-Asteroid::Asteroid(double x, double y, double w) {
+Asteroid::Asteroid(double x, double y, double w, int i) {
 	xCoord = x;
 	yCoord = y;
 	weight = w;
+	index = i;
 	collected = false;
 }
 
@@ -21,7 +23,9 @@ Asteroid::~Asteroid() {
 
 }
 
-
+int Asteroid::getIndex() {
+	return index++;
+}
 
 double Asteroid::getWeight() {
 	return weight;
@@ -39,6 +43,9 @@ bool Asteroid::isCollected() {
 	return collected;
 }
 
+void Asteroid::setIndex(int i) {
+	index = i;
+}
 void Asteroid::setWeight(double w) {
 	weight = w;
 }

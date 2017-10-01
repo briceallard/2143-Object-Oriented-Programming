@@ -6,7 +6,7 @@
 using namespace std;
 
 class Ship {
-/////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////
 public:
 	// Default constructor
 	Ship();
@@ -37,10 +37,10 @@ public:
 	// Mutator functions
 	void setXCoord(double);
 	void setYCoord(double);
-	void findAsteroid(vector<Asteroid>&);
+	void findAsteroid(vector<Asteroid>&, ofstream&);
 	void collectAsteroid(vector<Asteroid>&, int);
 	void moveShip(double, double, double);
-/////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////
 private:
 	//Member variables
 	double totWeight;

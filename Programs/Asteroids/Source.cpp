@@ -3,6 +3,7 @@
 #include <fstream>
 #include <vector>
 #include <stdlib.h>
+#include <Windows.h>
 #include "asteroid.h"
 #include "ship.h"
 
@@ -13,6 +14,9 @@ struct Points {
 	double y;
 	int asteroids;
 };
+
+void delay(double, int);
+// delay ==> pause with a '.' every second for output
 
 Points initiateLaunch(vector<Asteroid>&);
 // initiateLaunch ==> gets user input and establishes ship
@@ -29,9 +33,21 @@ void printVector(vector<Asteroid>&);
 void printDashboard(Ship);
 // printDashboard ==> prints header with ship information
 
+void outfileHeader(ofstream&);
+
+void outfilePrint(vector<Asteroid>&, Ship, ofstream&, int);
+// outfilePrint ==> outputs the mining data to outfile.txt
+// @param const vector<Asteroid>& ==> Asteroids in field
+// @param Ship ==> ship data
+// @param ofstream& ==> outfile to write too
+
 int main() {
 	vector<Asteroid> myAsteroids;
 	fillVector(myAsteroids);
+
+	ofstream outfile;
+	outfile.open("output.txt");
+	outfileHeader(outfile);
 
 	Points userCoords = initiateLaunch(myAsteroids);
 	double xShipCoord = userCoords.x;
@@ -41,7 +57,7 @@ int main() {
 
 	for (unsigned int i = 0; i < numToCollect; i++) {
 		printDashboard(myShip);
-		myShip.findAsteroid(myAsteroids);
+		myShip.findAsteroid(myAsteroids, outfile);
 	}
 
 	system("pause");
@@ -56,15 +72,17 @@ Points initiateLaunch(vector<Asteroid>& myAsteroids) {
 	int selection = 0;
 	unsigned int maxAsteroids = myAsteroids.size();
 
-	cout << "--- SpaceAsteroid, Inc ---\n\n--- Initializing radar ---\n\n";
-	cout << "Radar has located " << maxAsteroids 
-		<< " asteroids in your current solar system.\n";
-	cout << "How many would you like to mine today Captain?\n";
-	cout << "Input (1-" << maxAsteroids << "): ";
-	cin >> userCollects;
-	cout << "\nWhere would you like to launch your ship?\n";
+	cout << "--- SpaceAsteroid, Inc ---\n\n";
+	cout << "Analyzing system data";
+	delay(1, 3);
+	cout << "Initializing radar";
+	delay(1, 3);
+	cout << "Entering hyper-space";
+	delay(1, 3);
+	cout << "\nWelcome, Captain!\n";
+	cout << "Where would you like to mine today?\n";
 	cout << "1. Default [0,0]\n";
-	cout << "2. User Specified Location\n";
+	cout << "2. Specify Location\n";
 	cout << "Input (1-2): ";
 	cin >> selection;
 	cout << '\n';
@@ -72,15 +90,15 @@ Points initiateLaunch(vector<Asteroid>& myAsteroids) {
 	if (selection == 1) {
 		xyz.x = x;
 		xyz.y = y;
-		xyz.asteroids = userCollects;
 
 		cout << "Default coordinates entered into navigation.\n";
-		cout << "Press Enter to launch and begin mining expidition ...\n\n";
+		cout << "Press Enter to make hyper-jump and begin mining "
+			<< "expidition ...\n\n";
 		system("pause");
 	}
 	else if (selection == 2) {
 		cout << "Enter coordinates for your ship ...\n";
-		cout << "X: "; 
+		cout << "X: ";
 		cin >> x;
 		cout << "Y: ";
 		cin >> y;
@@ -88,31 +106,55 @@ Points initiateLaunch(vector<Asteroid>& myAsteroids) {
 
 		xyz.x = x;
 		xyz.y = y;
-		xyz.asteroids = userCollects;
 
-		cout << '[' << x << ',' << y 
+		cout << '[' << x << ',' << y
 			<< "] coordinates entered into navigation.\n";
-		cout << "Press Enter to launch and begin mining expidition ...\n\n";
+		cout << "Press Enter to make hyper-jump and begin mining "
+			<< "expidition ...\n\n";
 		system("pause");
 	}
 	else {
 		xyz.x = x;
 		xyz.y = y;
-		xyz.asteroids = userCollects;
 
-		cout << "Invalid selection!";
+		cout << "Invalid selection!\n";
 		cout << "Default coordinates entered into navigation.\n";
-		cout << "Press Enter to launch and begin mining expidition ...\n\n";
+		cout << "Press Enter to make hyper-jump and begin mining "
+			<< "expidition ...\n\n";
 		system("pause");
 	}
 
+	cout << "\nScanning environment";
+	delay(1, 5);
+	cout << "\nRadar has located " << maxAsteroids
+		<< " asteroids in your current solar system.\n";
+	cout << "How many would you like to mine today Captain?\n";
+	cout << "Input (1-" << maxAsteroids << "): ";
+	cin >> userCollects;
+	xyz.asteroids = userCollects;
+
+	cout << "\nPress enter to begin mining ";
+
 	return(xyz);
+}
+
+void delay(double time, int loop) {
+	double timer = time * 1000;
+
+	for (unsigned int i = 0; i < loop; i++) {
+		cout.flush();
+		Sleep(timer);
+		cout << ". ";
+	}
+	cout << "DONE!" << endl;
+	cout.flush();
 }
 
 void fillVector(vector<Asteroid>& newMyAsteroids) {
 	double x;
 	double y;
 	double weight;
+	int index = 1;
 
 	ifstream infile;
 	infile.open("input.txt");
@@ -120,10 +162,11 @@ void fillVector(vector<Asteroid>& newMyAsteroids) {
 	infile >> x >> y >> weight;
 
 	while (!infile.eof()) {
-		Asteroid newAsteroid(x, y, weight);
+		Asteroid newAsteroid(x, y, weight, index);
 		newMyAsteroids.push_back(newAsteroid);
 
 		infile >> x >> y >> weight;
+		index++;
 	}
 }
 
@@ -143,19 +186,31 @@ void printDashboard(Ship S) {
 
 	cout << "===========================================================\n";
 	cout << setw(17) << ' ';
-	cout << setw(26) << "Ship Information Dashboard" << '\n';
+	cout << setw(26) << "Ship Information Dashboard" << "\n";
 	cout << setw(2) << ' ';
-	cout << setw(10) << left << "Position: ";
-	cout << setw(9) << left << '[' << S.getXCoord()
-		<< ','<< S.getYCoord() << ']';
-	cout << setw(8) << ' ';
-	cout << setw(19) << left << "Hull Weight(Tons): ";
-	cout << setw(10) << S.getCollectedWeight() << '\n';
+	cout << setw(20) << left << "--Current Position--";
+	cout << setw(20) << ' ';
+	cout << setw(19) << "--Ship Status--\n";
+	cout << setw(4) << ' ';
+	cout << setw(1) << left << '[' << S.getXCoord()
+		<< ',' << S.getYCoord() << ']';
+	cout << setw(20) << ' ';
+	cout << setw(17) << right << S.getShipHealth() << "%\n\n";
 	cout << setw(2) << ' ';
-	cout << setw(10) << left << "Health: " << S.getShipHealth() << '%';
-	cout << setw(15) << ' ';
-	cout << setw(18) << "Traveled (Miles): " << S.getTotalDistance()
-		<< '\n';
+	cout << setw(20) << left << "--Hull Weight(Tons)--";
+	cout << setw(13) << ' ';
+	cout << setw(20) << "--Distance Traveled--\n";
+	cout << setw(9) << ' ';
+	cout << setw(24) << S.getCollectedWeight();
+	cout << setw(20) << right << S.getTotalDistance() << "km\n";
 	cout << "===========================================================\n";
+}
 
+void outfileHeader(ofstream& outfile) {
+	outfile << "Brice Allard\n\n";
+
+	outfile << setw(20) << left << "Asteroid Collected";
+	outfile << setw(10) << left << "Position";
+	outfile << setw(10) << right << "Weight";
+	outfile << setw(30) << right << "Distance (miles)" << endl;
 }

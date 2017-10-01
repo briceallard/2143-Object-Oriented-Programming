@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <math.h>
 #include <vector>
 #include "ship.h"
@@ -54,13 +55,13 @@ void Ship::setYCoord(double y) {
 	shipYCoord = y;
 }
 
-void Ship::findAsteroid(vector<Asteroid>& myAsteroids) {
+void Ship::findAsteroid(vector<Asteroid>& myAsteroids, ofstream& outfile) {
 	unsigned int size = myAsteroids.size();
 	double asteroidX;
 	double asteroidY;
 	int closestIndex = 0;
 	double closestDistance = DBL_MAX;
-	
+
 	for (unsigned int i = 0; i < size; i++) {
 		double distance = 0;
 
@@ -69,7 +70,7 @@ void Ship::findAsteroid(vector<Asteroid>& myAsteroids) {
 
 		distance = sqrt(pow((asteroidX - getXCoord()), 2)
 			+ pow((asteroidY - getYCoord()), 2));
-		
+
 		if ((!myAsteroids[i].isCollected()) && (distance < closestDistance)) {
 			closestIndex = i;
 			closestDistance = distance;
@@ -84,6 +85,8 @@ void Ship::findAsteroid(vector<Asteroid>& myAsteroids) {
 	cout << "Moving to coordinates [" << asteroidX << ','
 		<< asteroidY << "]\n";
 	system("pause");
+
+	outfile << "  " << closestIndex + 1 << endl;
 
 	moveShip(asteroidX, asteroidY, closestDistance);
 	collectAsteroid(myAsteroids, closestIndex);
