@@ -1,4 +1,15 @@
 Brice Allard
+2143 - OOP
+Dr. Stringfellow
+Program 2 - Asterodis
 
-  Asteroid Collected  Position    Weight              Distance (miles)
-  0  0  0  0  0
+                      Mission Status Report
+---------------------------------------------------------------------
+Asteroid Collected  Position      Weight             Distance (miles)
+         1             4,5         2.2                  6.40312
+         2             5,10         5.6                  5.09902
+         8             0,10           3                        5
+         3            20,30           4                  28.2843
+         4            30,40         3.5                  14.1421
+---------------------------------------------------------------------
+        20              -          18.3                  58.9286

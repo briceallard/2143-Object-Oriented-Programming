@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <math.h>
 #include <vector>
@@ -84,9 +85,16 @@ void Ship::findAsteroid(vector<Asteroid>& myAsteroids, ofstream& outfile) {
 		<< closestDistance << ".\n";
 	cout << "Moving to coordinates [" << asteroidX << ','
 		<< asteroidY << "]\n";
-	system("pause");
 
-	outfile << "  " << closestIndex + 1 << endl;
+	outfile << setw(10) << right << myAsteroids[closestIndex].getIndex();
+	outfile << setw(4) << ' ';
+	outfile << setw(10) << right << myAsteroids[closestIndex].getXCoord() << ',' 
+		<< myAsteroids[closestIndex].getYCoord();
+	outfile << setw(12) << right << myAsteroids[closestIndex].getWeight();
+	outfile << setw(25) << right << closestDistance;
+	outfile << endl;
+
+	system("pause");
 
 	moveShip(asteroidX, asteroidY, closestDistance);
 	collectAsteroid(myAsteroids, closestIndex);

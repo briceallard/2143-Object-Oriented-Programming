@@ -41,6 +41,8 @@ void outfilePrint(vector<Asteroid>&, Ship, ofstream&, int);
 // @param Ship ==> ship data
 // @param ofstream& ==> outfile to write too
 
+void outfileTotals(vector<Asteroid>&, Ship, ofstream&);
+
 int main() {
 	vector<Asteroid> myAsteroids;
 	fillVector(myAsteroids);
@@ -60,6 +62,7 @@ int main() {
 		myShip.findAsteroid(myAsteroids, outfile);
 	}
 
+	outfileTotals(myAsteroids, myShip, outfile);
 	system("pause");
 	return 0;
 }
@@ -74,11 +77,11 @@ Points initiateLaunch(vector<Asteroid>& myAsteroids) {
 
 	cout << "--- SpaceAsteroid, Inc ---\n\n";
 	cout << "Analyzing system data";
-	delay(1, 3);
+	//delay(1, 3);
 	cout << "Initializing radar";
-	delay(1, 3);
+	//delay(1, 3);
 	cout << "Entering hyper-space";
-	delay(1, 3);
+	//delay(1, 3);
 	cout << "\nWelcome, Captain!\n";
 	cout << "Where would you like to mine today?\n";
 	cout << "1. Default [0,0]\n";
@@ -125,7 +128,7 @@ Points initiateLaunch(vector<Asteroid>& myAsteroids) {
 	}
 
 	cout << "\nScanning environment";
-	delay(1, 5);
+	//delay(1, 5);
 	cout << "\nRadar has located " << maxAsteroids
 		<< " asteroids in your current solar system.\n";
 	cout << "How many would you like to mine today Captain?\n";
@@ -207,10 +210,23 @@ void printDashboard(Ship S) {
 }
 
 void outfileHeader(ofstream& outfile) {
-	outfile << "Brice Allard\n\n";
+	outfile << "Brice Allard\n";
+	outfile << "2143 - OOP\n";
+	outfile << "Dr. Stringfellow\n";
+	outfile << "Program 2 - Asterodis\n\n";
 
-	outfile << setw(20) << left << "Asteroid Collected";
+	outfile << setw(44) << right << "Mission Status Report\n";
+	outfile << setw(70) << setfill('-') << '\n';
+	outfile << setfill(' ') << setw(20) << left << "Asteroid Collected";
 	outfile << setw(10) << left << "Position";
 	outfile << setw(10) << right << "Weight";
-	outfile << setw(30) << right << "Distance (miles)" << endl;
+	outfile << setw(29) << right << "Distance (miles)" << endl;
+}
+
+void outfileTotals(vector<Asteroid>& myAsteroids, Ship S, ofstream& outfile) {
+	outfile << setw(70) << setfill('-') << '\n';
+	outfile << setfill(' ') << setw(10) << right << myAsteroids.size();
+	outfile << setw(15) << right << '-';
+	outfile << setw(14) << right << S.getCollectedWeight();
+	outfile << setw(25) << right << S.getTotalDistance() << endl;
 }
