@@ -1,3 +1,5 @@
+#include <math.h>
+#include <vector>
 #pragma once
 
 using namespace std;
@@ -21,6 +23,7 @@ public:
 	double getWeight();
 	// getWeight
 	// @return double - weight of asteroid
+	
 	double getXCoord();
 	// getXCoord
 	// @return double - X coordinate for asteroid location
@@ -30,6 +33,7 @@ public:
 	bool isCollected();
 	// isCollected
 	// @return bool - TRUE/FALSE has asteroid been collected
+	bool isTooBig();
 
 	//Mutator Functions
 	void setIndex(int);
@@ -42,6 +46,7 @@ public:
 	/////////////////////////////////////////////////////
 private:
 	// Member Variables
+	double maxWeight;
 	double weight;
 	double xCoord;
 	double yCoord;

@@ -35,7 +35,7 @@ void printDashboard(Ship);
 
 void outfileHeader(ofstream&);
 
-void outfilePrint(vector<Asteroid>&, Ship, ofstream&, int);
+void outfileTotals(vector<Asteroid>&, Ship, ofstream&);
 // outfilePrint ==> outputs the mining data to outfile.txt
 // @param const vector<Asteroid>& ==> Asteroids in field
 // @param Ship ==> ship data

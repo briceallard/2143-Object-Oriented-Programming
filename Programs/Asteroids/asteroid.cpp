@@ -1,3 +1,8 @@
+#include <iostream>
+#include <iomanip>
+#include <fstream>
+#include <math.h>
+#include <vector>
 #include "asteroid.h"
 #include "ship.h"
 
@@ -41,6 +46,14 @@ double Asteroid::getYCoord() {
 
 bool Asteroid::isCollected() {
 	return collected;
+}
+
+bool Asteroid::isTooBig() {
+	maxWeight = 10;
+
+	if (maxWeight < getWeight())
+		return true;
+	return false;
 }
 
 void Asteroid::setIndex(int i) {
