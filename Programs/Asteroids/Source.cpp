@@ -77,11 +77,11 @@ Points initiateLaunch(vector<Asteroid>& myAsteroids) {
 
 	cout << "--- SpaceAsteroid, Inc ---\n\n";
 	cout << "Analyzing system data";
-	//delay(1, 3);
+	delay(1, 3);
 	cout << "Initializing radar";
-	//delay(1, 3);
+	delay(1, 3);
 	cout << "Entering hyper-space";
-	//delay(1, 3);
+	delay(1, 3);
 	cout << "\nWelcome, Captain!\n";
 	cout << "Where would you like to mine today?\n";
 	cout << "1. Default [0,0]\n";
@@ -128,7 +128,7 @@ Points initiateLaunch(vector<Asteroid>& myAsteroids) {
 	}
 
 	cout << "\nScanning environment";
-	//delay(1, 5);
+	delay(1, 5);
 	cout << "\nRadar has located " << maxAsteroids
 		<< " asteroids in your current solar system.\n";
 	cout << "How many would you like to mine today Captain?\n";
