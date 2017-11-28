@@ -1,29 +1,36 @@
 #pragma once
-#include <iostream>
 
 template <class T>
 struct Node {
 	T data;
+	int team;
 	Node<T> *next;
 	Node<T> *prev;
 };
 
 template <class T>
 class List {
+	typedef Node<T> Node;
+
 public:
 	// Constructors
-	List();
-	List(const List<T>&);
+	List<T>();
+	List<T>(const List<T>&);
+
+	// Destructor
+	~List<T>();
 
 	// Mutator Functions
-
+	void enque(T, int);
+	void deque();
+	void deleteAll();
 
 	// Accessor Functions
+	void print();
 
-
-	// Operator Overload
-	List<T> & operator = (const List<T>&);
-private:
-	Node<T> *start;
-	Node<T> *current;
+protected:
+	Node *front;
+	Node *rear;
 };
+
+#include "Queue.cpp"
