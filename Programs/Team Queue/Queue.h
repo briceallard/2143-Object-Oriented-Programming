@@ -28,9 +28,9 @@ public:
 	// Accessor Functions
 	void print();
 
-protected:
-	Node *front;
-	Node *rear;
+private:
+	Node *head;
+	Node *tail;
 };
 
 #include "Queue.cpp"
