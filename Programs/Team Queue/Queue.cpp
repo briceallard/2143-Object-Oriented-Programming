@@ -3,11 +3,14 @@
 
 // Default Constructor
 template <class T>
-List<T>::List() : front(NULL), rear(NULL) {}
+List<T>::List() : head(NULL), tail(NULL) {}
 
 // Copy Constructor
 template <class T>
-List<T>::List(const List<T>& newList) {
+List<T>::List(const List<T>& newList) : 
+	head(NULL), tail(NULL) {
+
+
 }
 
 //Destructor
@@ -24,15 +27,15 @@ void List<T>::enque(T data, int team) {
 	temp->next = NULL;
 	temp->prev = NULL;
 
-	if (front == NULL) {
-		front = rear = temp;
+	if (head == NULL) {
+		head = tail = temp;
 		cout << "E - Employee: " << temp->data
 			<< " Team: " << temp->team << endl;
 	}
 	else {
-		temp->prev = rear;
-		rear->next = temp;
-		rear = temp;
+		temp->prev = tail;
+		tail->next = temp;
+		tail = temp;
 		cout << "E - Employee: " << temp->data
 			<< " Team: " << temp->team << endl;
 	}
@@ -42,47 +45,56 @@ template <class T>
 void List<T>::deque() {
 	Node *temp;
 	
-	if (front == NULL)
+	if (head == NULL)
 		cout << "The Queue is empty ...\n";
-	else {
-		temp = rear;
+	else if (head == tail) {
+		temp = tail;
 		cout << "D - Employee: " << temp->data
 			<< " Team: " << temp->team << endl;
-		rear = temp->prev;
+		head = tail = NULL;
 		delete temp;
-		rear->next = NULL;
+	}
+	else {
+		temp = tail;
+		cout << "D - Employee: " << temp->data
+			<< " Team: " << temp->team << endl;
+		tail = temp->prev;
+		delete temp;
+		tail->next = NULL;
 	}
 }
 
 template <class T>
 void List<T>::print() {
-	Node *temp = front;
+	Node *temp = head;
 
-	if (front == NULL)
+	if (head == NULL)
 		cout << "The Queue is empty ...\n" << endl;
 	else {
+		cout << endl;
 		while (temp != NULL) {
-			cout << "Employee " << temp->data 
-				<< " belongs to team " << temp->team 
-				<< endl;
+			cout << "<- " << temp->data 
+				<< ':' << temp->team << " -> ";
 			temp = temp->next;
 		}
-		cout << endl;
+		cout << endl << endl;
+		cout << head->data << ':' << head->team << " = HEAD\n"
+			<< tail->data << ':' << tail->team << " = TAIL\n\n";
 	}
 }
 
 template <class T>
 void List<T>::deleteAll() {
-	Node *temp = front;
+	Node *temp = head;
 
 	if (temp == NULL)
 		cout << "The Queue has nothing to delete ...\n" << endl;
 	else {
-		while (front != NULL) {
-			front = front->next;
+		while (head != NULL) {
+			head = head->next;
 			delete temp;
-			temp = front;
+			temp = head;
 		}
-		rear = front = NULL;
+		tail = head = NULL;
 	}
 }
