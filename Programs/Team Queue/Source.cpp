@@ -1,22 +1,107 @@
 #include <iostream>
+#include <fstream>
 #include <string>
 #include "Queue.h"
 
 using namespace std;
 
+// 
+string initFiles(string);
+void initQueue(string);
+
 int main() {
-	List<int> list;
-	
-	list.enque(254, 2);
-	list.deque();
+	List<int> L;
+	string infileName;
 
-	list.enque(163, 1);
-	list.enque(344, 3);
-	list.enque(255, 2);
-	list.deque();
+	infileName = initFiles(infileName);
+	initQueue(infileName);
 
-	list.print();
+	L.print();
 
 	system("pause");
 	return 0;
+}
+
+string initFiles(string infileName) {
+beginning:				// Create breakpoint
+	int selection;
+	ifstream infile;
+	ofstream outfile;
+	outfile.open("output.txt", ios::trunc);
+
+	cout << "Priority Queue w/ Teams\nCoded By: Brice Allard\n\n";
+	outfile << "Priority Queue w/ Teams\nCoded By: Brice Allard\n\n";
+
+	cout << "Use Default or Custom Infile?\n";
+	cout << "1. Default\n2. Custom\n(1-2): ";
+	cin >> selection;
+
+	if (selection == 1) {
+		infileName = "prog5data.txt";
+		infile.open(infileName);
+
+		if (infile)
+			cout << "\nDefault Input File Selected (prog5data.txt)...\n\n";
+		else {
+			cout << "\nDefault Input File Failed to Load ... \n\n";
+			system("pause");
+			system("CLS");
+			goto beginning;			// Try again ...
+		}
+	}
+	else if (selection == 2) {
+		cout << "\nType Name of Input File (ex. inputfile.txt):\n";
+		cin.ignore();
+		getline(cin, infileName);
+		infile.open(infileName);
+
+		if (infile)
+			cout << "\nCustom Input File Selected (" << infileName << ")\n\n";
+		else {
+			cout << "\nCustom Input File Failed to Load ... \n\n";
+			system("pause");
+			system("CLS");
+			goto beginning;
+		}
+	}
+	else {
+		cout << "\nEnter a Valid Option ...\n\n";
+		system("pause");
+		system("CLS");
+		goto beginning;
+	}
+
+	infile.close();
+	outfile.close();
+
+	return infileName;
+}
+
+void initQueue(string infileName) {
+	ifstream infile;
+	infile.open(infileName);
+
+	int numTeams, totMembers, teamNum;
+
+	infile >> numTeams >> totMembers;
+
+	int** teams = new int*[numTeams];
+
+	for (int i = 0; i < numTeams; i++)
+		teams[i] = new int[totMembers];
+
+	for (int i = 0; i < numTeams; i++) {
+		for (int j = 0; j < totMembers; j++) {
+			infile >> teamNum;
+			teams[i][j] = teamNum;
+		}
+		infile >> totMembers;
+	}
+
+
+	for (int i = 0; i < numTeams; i++) {
+		for (int j = 0; j < totMembers; j++) {
+			cout << teams[i][j] << " -> ";
+		}
+	}
 }
