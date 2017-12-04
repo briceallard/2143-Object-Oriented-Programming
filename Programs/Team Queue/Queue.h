@@ -22,10 +22,12 @@ public:
 
 	// Mutator Functions
 	void enque(T, int);
+	void insert(T, int);
 	void deque();
 	void deleteAll();
-
+	
 	// Accessor Functions
+	Node* search(int);
 	void print();
 
 private:
