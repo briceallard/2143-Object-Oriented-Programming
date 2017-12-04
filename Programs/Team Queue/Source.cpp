@@ -1,20 +1,20 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <sstream>
 #include "Queue.h"
 
 using namespace std;
 
-// 
 string initFiles(string);
-void initQueue(string);
+void initQueue(List<int>&, string);
 
 int main() {
 	List<int> L;
 	string infileName;
 
 	infileName = initFiles(infileName);
-	initQueue(infileName);
+	initQueue(L, infileName);
 
 	L.print();
 
@@ -77,31 +77,58 @@ beginning:				// Create breakpoint
 	return infileName;
 }
 
-void initQueue(string infileName) {
+void initQueue(List<int>& L, string infileName) {
 	ifstream infile;
+	ofstream output;
 	infile.open(infileName);
+	output.open("output.txt", ios::app);
 
 	int numTeams, totMembers, teamNum;
+	string toDo;
 
-	infile >> numTeams >> totMembers;
+	infile >> numTeams;
 
-	int** teams = new int*[numTeams];
-
-	for (int i = 0; i < numTeams; i++)
-		teams[i] = new int[totMembers];
-
-	for (int i = 0; i < numTeams; i++) {
-		for (int j = 0; j < totMembers; j++) {
-			infile >> teamNum;
-			teams[i][j] = teamNum;
-		}
+	while (numTeams != 0) {
 		infile >> totMembers;
-	}
 
+		int** teams = new int*[numTeams];
 
-	for (int i = 0; i < numTeams; i++) {
-		for (int j = 0; j < totMembers; j++) {
-			cout << teams[i][j] << " -> ";
+		for (int i = 0; i < numTeams; i++)
+			teams[i] = new int[totMembers];
+
+		for (int i = 0; i < numTeams; i++) {
+			for (int j = 0; j < totMembers; j++) {
+				infile >> teamNum;
+				teams[i][j] = teamNum;
+			}
+			infile >> totMembers;
 		}
+
+		//string line;
+		//while (getline(infile, line)) {
+		//	stringstream line_stream(line);
+
+		//	if (line_stream >> toDo >> teamNum) {
+		//		cout << "READ '" << toDo << "' from input.\n";
+		//	}
+		//}
+
+		infile >> toDo >> teamNum;
+		cout << "READ '" << toDo << "' from input.\n";
+
+		if (toDo == "STOP")
+			return;
+		if (toDo == "ENQUEUE") {
+			
+			for (int i = 0; i < numTeams; i++) {
+				for (int j = 0; j < totMembers; j++) {
+					if (teams[i][j] == teamNum) {
+						L.insert(teamNum, i + 1);
+					}
+				}
+				infile >> totMembers;
+			}
+		}
+		infile >> numTeams;
 	}
 }
