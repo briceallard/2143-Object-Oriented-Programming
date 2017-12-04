@@ -7,10 +7,17 @@ List<T>::List() : head(NULL), tail(NULL) {}
 
 // Copy Constructor
 template <class T>
-List<T>::List(const List<T>& newList) : 
-	head(NULL), tail(NULL) {
-
-
+List<T>::List(const List<T>& newList) {
+	if (newList.head != NULL) {
+		head = new Node(newList.head);
+		Node *temp = newList.head;
+		tail = head;
+		while (temp->next != NULL) {
+			tail->next = new Node(temp->next);
+			tail - tail->next;
+			temp = temp->next;
+		}
+	}
 }
 
 //Destructor
@@ -42,6 +49,45 @@ void List<T>::enque(T data, int team) {
 }
 
 template <class T>
+void List<T>::insert(T data, int team) {
+	Node *temp = new Node;
+	temp->data = data;
+	temp->team = team;
+
+	// if there is no list, insert to head
+	if (head == NULL) {
+		temp->next = temp->prev = NULL;
+		head = tail = temp;
+		cout << "E - Employee: " << temp->data
+			<< " Team: " << temp->team << endl;
+	}
+	// else if there is a list, search team
+	else {
+		Node *pre = search(team);
+
+		// if *pre is last Node in queue
+		if (pre->next == NULL) {
+			pre->next = temp;
+			temp->prev = pre;
+			temp->next = NULL;
+			tail = temp;
+			cout << "E - Employee: " << temp->data
+				<< " Team: " << temp->team << endl;
+		}
+		else {
+			Node *after = pre->next;
+
+			pre->next = temp;
+			temp->prev = pre;
+			temp->next = after;
+			after->prev = temp;
+			cout << "E - Employee: " << temp->data
+				<< " Team: " << temp->team << endl;
+		}
+	}
+}
+
+template <class T>
 void List<T>::deque() {
 	Node *temp;
 	
@@ -55,12 +101,40 @@ void List<T>::deque() {
 		delete temp;
 	}
 	else {
-		temp = tail;
+		temp = head;
 		cout << "D - Employee: " << temp->data
 			<< " Team: " << temp->team << endl;
-		tail = temp->prev;
+		head = temp->next;
+		head->prev = NULL;
 		delete temp;
-		tail->next = NULL;
+	}
+}
+
+template <class T>
+void List<T>::deleteAll() {
+	Node *temp = head;
+
+	if (temp == NULL)
+		cout << "The Queue has nothing to Delete ...\n" << endl;
+	else {
+		while (head != NULL) {
+			head = head->next;
+			delete temp;
+			temp = head;
+		}
+		tail = head = NULL;
+	}
+}
+
+template <class T>
+Node<T>* List<T>::search(int team) {
+	Node *temp = head;
+	
+	while (temp->team <= team && temp->next != NULL) {
+		if (temp->next->team > team)
+			return temp;
+		else
+			temp = temp->next;
 	}
 }
 
@@ -68,7 +142,7 @@ template <class T>
 void List<T>::print() {
 	Node *temp = head;
 
-	if (head == NULL)
+	if (temp == NULL)
 		cout << "The Queue is empty ...\n" << endl;
 	else {
 		cout << endl;
@@ -80,21 +154,5 @@ void List<T>::print() {
 		cout << endl << endl;
 		cout << head->data << ':' << head->team << " = HEAD\n"
 			<< tail->data << ':' << tail->team << " = TAIL\n\n";
-	}
-}
-
-template <class T>
-void List<T>::deleteAll() {
-	Node *temp = head;
-
-	if (temp == NULL)
-		cout << "The Queue has nothing to delete ...\n" << endl;
-	else {
-		while (head != NULL) {
-			head = head->next;
-			delete temp;
-			temp = head;
-		}
-		tail = head = NULL;
 	}
 }
